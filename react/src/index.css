@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.fade-right{
+  animation: fade-right 0.5s ease-in;
+}
+.fade-left{
+  animation: fade-left 0.5s ease-in;
+}
+
+@keyframes fade-right{
+  from{
+    transform: translateX(-2rem);
+    opacity: 0;
+  }
+  to{
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-left{
+  from{
+    transform: translateX(2rem);
+    opacity: 0;
+  }
+  to{
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
