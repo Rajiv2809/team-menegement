@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Closure;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
@@ -32,38 +33,50 @@ class AuthController extends Controller
             'user' => $user
         ],201);
     }
-    public function login(LoginRequest $request)
-    {
-        
-        $recaptchaResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('NOCAPTCHA_SECRET'), 
-            'response' => $request->recaptcha,
-            'remoteip' => $request->ip(),
-        ]);
-    
-        $recaptchaData = $recaptchaResponse->json();
-    
-        if (!$recaptchaData['success']) {
-            return response()->json([
-                'message' => 'CAPTCHA validation failed'
-            ], 422);
-        }
-    
+    public function login(Request $request)
+{
+    // Validate the request including CAPTCHA
+    $validator = Validator::make($request->all(), [
+        'username' => 'required|string|max:255',
+        'password' => 'required|string',
+        // 'recaptcha' => [
+        //     'required',
+        //     function (string $attribute, mixed $value, Closure $fail) {
+        //         $recaptchaResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //             'secret' => env('NOCAPTCHA_SECRET'), 
+        //             'response' => $value,
+        //             'remoteip' => \request()->ip()
+        //         ]); 
 
-        $credentials = $request->only('username', 'password');
-    
-        if (!Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'Wrong username or password'
-            ], 401);
-        }
-    
-        $user = User::where('username', $request->username)->first();
-    
+        //         if (!$recaptchaResponse->json('success')) {
+        //             $fail("The {$attribute} is invalid.");
+        //         }
+        //     },
+        // ],
+    ]);
+
+    if ($validator->fails()) {
         return response()->json([
-            'message' => 'Login Success',
-            'token' => 'Bearer ' . $user->createToken($user->username)->plainTextToken,
-            'user' => $user
-        ], 200);
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
     }
+    $data = [
+        "username" => $request->username,
+        "password" => $request->password
+    ];
+    if (!Auth::attempt($data)) {
+        return response()->json([
+            'message' => 'Wrong username or password'
+        ], 401);
+    }
+
+    $user = User::where('username', $request->username)->first();
+
+    return response()->json([
+        'message' => 'Login Success',
+        'token' => 'Bearer ' . $user->createToken($user->username)->plainTextToken,
+        'user' => $user
+    ], 200);
+}
 }

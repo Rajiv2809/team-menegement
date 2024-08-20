@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class BannerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,18 +23,16 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        
         return [
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|',
-            'recaptcha' => 'required|captcha',
+            'bannerTitle' => 'required',
+            'bannerImage' =>  'required|image|mimes:jpeg,jpg,webp,png,gif|max:2048'
         ];
     }
-    protected function failedValidation(Validator $validator){
+    public function failedValidation(Validator $validator){
         throw new HttpResponseException(
             response()->json([
                 'message' => 'invalid field',
-                'error' => $validator->errors()
+                'errors' => $validator->errors()
             ], 422)
         );
     }

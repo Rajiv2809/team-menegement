@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axiosClient from '../axios'
 import { useStateContext } from '../contexts/context';
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +20,9 @@ export default function Login() {
             setToken(data.token);
             showToast(data.message);
             setCurrentUser(data.user)
-            navigate('/home')
-        }).catch(({ err }) => {
-            showToast(err.response.data.message, 'red')
+            navigate('/home');
+        }).catch((err) => {
+            showToast(err.response.data.message ,'red')
         })
 
 
