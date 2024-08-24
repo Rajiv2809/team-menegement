@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axiosClient from '../axios'
 import { useStateContext } from '../contexts/context';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 export default function Login() {
-    const { setToken, showToast, setCurrentUser } = useStateContext();
+    const { setToken, showToast,  } = useStateContext();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [captchaToken, setCaptchaToken] = useState(null);
+    const [isAdmin, setIsAdmin] = useState('')
     const navigate = useNavigate();
     const submit = (e) => {
         e.preventDefault()
@@ -19,11 +20,12 @@ export default function Login() {
         ).then(({ data }) => {
             setToken(data.token);
             showToast(data.message);
-            setCurrentUser(data.user)
-            navigate('/home');
+            setIsAdmin(data.user.role);
+            navigate('/game')
         }).catch((err) => {
             showToast(err.response.data.message ,'red')
-        })
+        });
+       
 
 
 

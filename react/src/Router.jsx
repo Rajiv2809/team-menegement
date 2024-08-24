@@ -9,6 +9,8 @@ import DefaultLayout from "./views/DefaultLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home"
+import Users from "./pages/Users";
+import Game from "./pages/Game"
 
 const router  = createBrowserRouter([
     
@@ -16,6 +18,11 @@ const router  = createBrowserRouter([
             path: '/',
             element: <GuestLayout/>,
             children: [
+                {
+                    path:'/',
+                    element: <Navigate to='/home'/>
+                },
+                
                 {
                     path:'/login',
                     element: <Login/>
@@ -32,13 +39,21 @@ const router  = createBrowserRouter([
             children: [
                 {
                     path:'/',
-                    element: <Navigate to='/home'/>
+                    element: <Navigate to='/dashboard'/>
                 },
                 {
-                    path:'/home',
+                    path:'/dashboard',
                     element: <Home/>
-                }
+                },
+                {
+                    path:'/users',
+                    element:<Users/>
+                },
+                {
+                    path:'/game',
+                    element: <Game/>
+                },
             ]
         }
 ])
-export default router;
+export default router;  

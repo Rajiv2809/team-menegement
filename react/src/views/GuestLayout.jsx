@@ -4,16 +4,21 @@ import { useStateContext } from '../contexts/context'
 import Toast from '../components/Toast'
 
 export default function GuestLayout() {
-    const {userToken} = useStateContext()
+    const {userToken, currentUser} = useStateContext()
+    //fecth /me
+    // useEffect(() => {},[])
 
+  
 
-
-    if(userToken){
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000)
-      return <Navigate to='/home'/>
+    if (userToken) {
+      if (currentUser === 'admin') {
+        return <Navigate to='/dashboard' />;
+      }
+      if (currentUser === 'user' || currentUser === 'admin') {
+        return <Navigate to='/game' />;
+      }
     }
+  
   return (
     <div>
         <Toast/>

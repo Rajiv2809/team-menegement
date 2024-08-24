@@ -3,6 +3,7 @@ import { createContext, useState , useContext} from "react";
 const StateContext = createContext({
     currentUser : {},
     userToken : null,
+
     toast: {
         message: '', 
         color : '',
@@ -11,6 +12,7 @@ const StateContext = createContext({
     setCurrentUser : () => {},
     setToken : () => {},
     setToast  : () => {},
+
 })
 export const ContextProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState({});
