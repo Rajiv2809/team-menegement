@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('role')->default('user');
-
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->date('dateOfBirth');
-            $table->string('phoneNumber');
-            $table->string('profilePicture');
+            $table->date('date_of_birth');
+            $table->string('phone_number');
+            $table->string('profile_picture');
+            $table->unsignedBigInteger('squad_id')->nullable();
+            $table->foreign('squad_id')->references('id')->on('team_squads');
             $table->rememberToken();
             $table->timestamps();
         });

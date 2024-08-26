@@ -23,10 +23,11 @@ class AuthController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
-            'dateOfBirth' => $request->dateOfBirth,
-            'phoneNumber' => $request->phoneNumber,
+            'date_of_birth' => $request->dateOfBirth,
+            'phone_number' => $request->phoneNumber,
             'password' => Hash::make($request->password),
-            'profilePicture' => $path
+            'profile_picture' => $path,
+            'squad_id' => null, 
         ]);
         return response()->json([
             'message' => 'created success',

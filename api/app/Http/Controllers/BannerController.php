@@ -12,8 +12,8 @@ class BannerController extends Controller
     public function create(BannerRequest $request){
         $path = $request->file('bannerImage')->store('images', 'public');
         Banner::create([
-            'bannerTitle' => $request->bannerTitle,
-            'bannerImage' => $path,
+            'banner_title' => $request->bannerTitle,
+            'banner_image' => $path,
             'status' => 'active',
         ]);
         return response()->json([

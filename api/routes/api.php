@@ -16,7 +16,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware(['auth:sanctum'])->group(function() {
   
     Route::get('/user/{username}', [UserController::class, 'getUser']);
-    Route::post('/user/{username}', [UserController::class, 'updateUser']);
+    Route::post('/user', [UserController::class, 'updateUser']);
 
     Route::middleware([AdminAccess::class])->group(function (){
         Route::post('/banner', [BannerController::class, 'create']);
@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
         Route::delete('/team-squad/{squadID}', [TeamSquadController::class, 'delete']);
 
         Route::post('/team-member', [TeamMemberController::class, 'create']);
-        Route::get('/team-member', [TeamMemberController::class, 'get']);
+        Route::get('/team-member/{squadID}', [TeamMemberController::class, 'get']);
         Route::post('/team-member/{memberID}', [TeamMemberController::class, 'update']);
         Route::delete('/team-member/{memberID}', [TeamMemberController::class, 'delete']);
     });

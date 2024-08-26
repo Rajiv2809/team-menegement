@@ -11,7 +11,7 @@ class TeamSquadController extends Controller
 {
     public function create(TeamSquadRequest $request){
         TeamSquad::create([
-            'squadName' => $request->squadName,
+            'squad_name' => $request->squadName,
             'description' =>  $request->description,
             'achievement' => $request->achievement
         ]);

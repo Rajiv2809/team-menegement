@@ -10,7 +10,7 @@ class TeamSquad extends Model
     use HasFactory;
 
     protected $fillable  = [ 
-        'squadName',
+        'squad_name',
         'achievement',
         'description'
 

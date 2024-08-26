@@ -22,9 +22,10 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'dateOfBirth',
-        'phoneNumber',
-        'profilePicture'
+        'date_of_birth',
+        'squad_id',
+        'phone_number',
+        'profile_picture',
     ];
     protected $timeStamp = false;
 
@@ -37,6 +38,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    public $timestamps = false;
     
 
     /**

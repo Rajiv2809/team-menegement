@@ -28,7 +28,8 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users,email',
             'dateOfBirth' => 'required|date_format:Y-m-d',
             'phoneNumber' => 'required|string|max:15',
-            'profilePicture' => 'required|image|mimes:jpeg,jpg,webp,png,gif|max:2048'
+            'profilePicture' => 'required|image|mimes:jpeg,jpg,webp,png,gif|max:2048',
+            'squad_id' => 'nullable|exists:squads,id'
         ];
     }
     protected function failedValidation(Validator $validator){
