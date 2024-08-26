@@ -21,9 +21,10 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/user/{username}', [UserController::class, 'getUser']);
     Route::post('/user', [UserController::class, 'updateUser']);
 
+    Route::get('/captcha', [CaptchaController::class, 'captcha']);
+    Route::get('/captcha/{token}', [CaptchaController::class, 'captchaImage']);
     Route::middleware([AdminAccess::class])->group(function (){
 
-        Route::get('/captcha', [CaptchaController::class, 'generateCaptcha']);
 
         Route::post('/banner', [BannerController::class, 'create']);
         Route::get('/banner', [BannerController::class, 'get']);
