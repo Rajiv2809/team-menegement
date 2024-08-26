@@ -35,7 +35,7 @@ class AuthController extends Controller
         ],201);
     }
     public function login(Request $request)
-{
+        {
     // Validate the request including CAPTCHA
     $validator = Validator::make($request->all(), [
         'username' => 'required|string|max:255',
