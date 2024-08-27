@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function() {
 
     Route::get('/captcha', [CaptchaController::class, 'captcha']);
     Route::get('/captcha/{token}', [CaptchaController::class, 'captchaImage']);
+    Route::post('/captcha', [CaptchaController::class, 'captchaVerify']);
     Route::middleware([AdminAccess::class])->group(function (){
 
 

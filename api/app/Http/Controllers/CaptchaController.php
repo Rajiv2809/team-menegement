@@ -1,15 +1,18 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class CaptchaController extends Controller
 {
     public function captcha()
     {
-        
+
         function generateRandomString($length = 6)
         {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -20,12 +23,12 @@ class CaptchaController extends Controller
             return $randomString;
         }
 
-        
+
         $captchaString = generateRandomString();
         $captchaToken = Str::uuid();
 
-        
-        Cache::put($captchaToken->toString(), $captchaString, 300); 
+
+        Cache::put($captchaToken->toString(), $captchaString, 300);
 
         return response()->json([
             'token' => $captchaToken
@@ -59,5 +62,40 @@ class CaptchaController extends Controller
         imagedestroy($image);
 
         return response($imageData)->header('Content-Type', 'image/png');
+    }
+    public function captchaVerify(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $captchaCode = Cache::get($request->token);
+        // dd($captchaCode);
+        if (!$captchaCode) {
+            return response()->json([
+                'message' => 'Invalid or expired CAPTCHA token'
+            ], 404);
+        }
+
+        if ($captchaCode === $request->input('code')) {
+
+            Cache::forget($request->token);
+
+            return response()->json([
+                'message' => 'CAPTCHA verified successfully'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'CAPTCHA verification failed'
+            ], 422);
+        }
     }
 }
