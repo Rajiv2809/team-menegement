@@ -36,24 +36,10 @@ class AuthController extends Controller
     }
     public function login(Request $request)
         {
-    // Validate the request including CAPTCHA
+
     $validator = Validator::make($request->all(), [
         'username' => 'required|string|max:255',
         'password' => 'required|string',
-        // 'recaptcha' => [
-        //     'required',
-        //     function (string $attribute, mixed $value, Closure $fail) {
-        //         $recaptchaResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //             'secret' => env('NOCAPTCHA_SECRET'), 
-        //             'response' => $value,
-        //             'remoteip' => \request()->ip()
-        //         ]); 
-
-        //         if (!$recaptchaResponse->json('success')) {
-        //             $fail("The {$attribute} is invalid.");
-        //         }
-        //     },
-        // ],
     ]);
 
     if ($validator->fails()) {

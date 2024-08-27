@@ -20,7 +20,7 @@ class AdminAccess
         if(Auth::user()->role !== "admin"){
             return response()->json([
                 'message' => 'Only Admin can access this '
-            ],402);
+            ],403);
         }
         return $next($request);
     }
