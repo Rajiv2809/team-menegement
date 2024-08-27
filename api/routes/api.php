@@ -20,9 +20,9 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/user/{username}', [UserController::class, 'getUser']);
     Route::post('/user', [UserController::class, 'updateUser']);
 
-    Route::get('/captcha', [CaptchaController::class, 'captcha']);
-    Route::get('/captcha/{token}', [CaptchaController::class, 'captchaImage']);
-    Route::post('/captcha', [CaptchaController::class, 'captchaVerify']);
+    Route::get('/captcha/requestToken', [CaptchaController::class, 'requestToken']);
+    Route::get('/captcha/{token}', [CaptchaController::class, 'generate']);
+    Route::post('/captcha/verify', [CaptchaController::class, 'verify']);
     Route::middleware([AdminAccess::class])->group(function (){
 
 

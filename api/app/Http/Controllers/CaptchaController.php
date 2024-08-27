@@ -10,32 +10,31 @@ use Illuminate\Support\Facades\Validator;
 
 class CaptchaController extends Controller
 {
-    public function captcha()
+    // private function generateRandomString($length = 6)
+    // {
+    //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //     $randomString = '';
+    //     for ($i = 0; $i < $length; $i++) {
+    //         $randomString .= $characters[rand(0, strlen($characters) - 1)];
+    //     }
+    //     return $randomString;
+    // }
+    public function requestToken()
     {
 
-        function generateRandomString($length = 6)
-        {
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $randomString = '';
-            for ($i = 0; $i < $length; $i++) {
-                $randomString .= $characters[rand(0, strlen($characters) - 1)];
-            }
-            return $randomString;
-        }
+        $uuid = Str::uuid()->toString();
 
+        $token = explode('-', $uuid)[0];
+        $captchaCode = substr(explode('-', $uuid)[4], 0, 6);
 
-        $captchaString = generateRandomString();
-        $captchaToken = Str::uuid();
-
-
-        Cache::put($captchaToken->toString(), $captchaString, 300);
+        Cache::put($token, $captchaCode, 180); 
 
         return response()->json([
-            'token' => $captchaToken
+            'token' => $token
         ]);
     }
 
-    public function captchaImage($token)
+    public function generate($token)
     {
 
         $captchaCode = Cache::get($token);
@@ -63,7 +62,7 @@ class CaptchaController extends Controller
 
         return response($imageData)->header('Content-Type', 'image/png');
     }
-    public function captchaVerify(Request $request)
+    public function verify(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'code' => 'required|string',
